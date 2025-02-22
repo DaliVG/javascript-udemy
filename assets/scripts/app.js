@@ -1,9 +1,11 @@
-const defaultResult = 0;
+let input = 2;
+let result;
 
-let result = defaultResult;
+result = input + 18;
 
-result = (result + 10) * 3 / 2 - 1;
+result = result - 2;
+result = result * 20;
+result = result / 2;
 
-let calculationDescription = `(${defaultResult} + 10) * 3 / 2 - 1`;
-
-outputResult(result,calculationDescription);
+alert(result);
+alert(input);
