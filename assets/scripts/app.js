@@ -5,12 +5,10 @@ let result = defaultResult;
 
 function add(number1, number2){
     const result = number1 + number2;
-    alert('The result is '+ result)
+    return result;
 }
 
-add(2, 3);
-add(1, 2);
-result = (result + 10) * 3 / 2 - 1;
+result = add(7, 3);
 
 let calculationDescription = `(${defaultResult} + 10) * 3 / 2 - 1`;
 
