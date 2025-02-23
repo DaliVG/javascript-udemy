@@ -41,7 +41,7 @@ function endRound() {
     setPlayerHealth(initialPlayerHealth);
     alert("You would be dead but the bonus life saved you!");
   }
-
+  
   if (currentMonsterHealth <= 0 && currentPlayerHealth > 0) {
     alert('You won!');
     writeToLog(LOG_EVENT_GAME_OVER, 
@@ -157,7 +157,12 @@ function writeToLog(event, value, monsterHealth, playerHealth){
 }
 
 function printLogHandler(){
-    console.log(battleLog)
+    for (let i = 0; i < 3; i++) {
+        console.log('- - - - - - - - - -');
+      }
+      for (const logEntry of battleLog) {
+        console.log(logEntry);
+      }
 }
 
 attackBtn.addEventListener('click', attackHandler);
