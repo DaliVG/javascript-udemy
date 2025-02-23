@@ -3,7 +3,7 @@ const defaultResult = 0;
 let result = defaultResult;
 
 function add() {
-  result = result + userInput.value;
+  result = result + parseInt(userInput.value);
   outputResult(result, '');
 }
 
