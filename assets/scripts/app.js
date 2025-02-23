@@ -27,22 +27,29 @@ function createAndWriteLog(operator, resultBeforeCacl, calcNumber){
   outputResult(currentResult, calculationDescription);
 }
 
+function calculateResult(calculationType){
+  const enteredNumber = getUserInput();
+  const initialResult = currentResult;
+  let mathOperator;
+  if(calculationType ==='ADD'){
+    currentResult += enteredNumber;
+    mathOperator = '+';
+  } else {
+    currentResult -= enteredNumber;
+    mathOperator = '-';
+  }
+
+  createAndWriteLog('+', initialResult, enteredNumber);
+  operationIdentifier(calculationType, initialResult, enteredNumber, currentResult);
+}
 
 
 function add() {
-  const enteredNumber = getUserInput();
-  const initialResult = currentResult;
-  currentResult += enteredNumber;
-  createAndWriteLog('+', initialResult, enteredNumber);
-  operationIdentifier('ADD', initialResult, enteredNumber, currentResult);
+  calculateResult('ADD')
 }
 
 function substrac() {
-  const enteredNumber = getUserInput();
-  const initialResult = currentResult;
-  currentResult -= enteredNumber;
-  createAndWriteLog('-', initialResult, enteredNumber);
-  operationIdentifier('SUBSTRAC', initialResult, enteredNumber, currentResult);
+  calculateResult('SUBSTRAC')
 }
 
 function multiply() {
