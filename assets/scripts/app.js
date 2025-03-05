@@ -1,13 +1,13 @@
 const addMovieCard = document.getElementById('add-modal');
 const addButton = document.querySelector('header button');
 const backdrop = document.getElementById('backdrop');
-const cancelButton = document.querySelector('#add-modal .btn--passive');
+const cancelAddButton = document.querySelector('#add-modal .btn--passive');
 
 let DOM ={
     addMovieCard: addMovieCard,
     addButton: addButton,
     backdrop: backdrop,
-    cancelButton: cancelButton
+    cancelAddButton: cancelAddButton
 }
 
 
@@ -25,4 +25,4 @@ const backdropClickHandler = () => {
 }
 
 DOM.addButton.addEventListener('click', toggleModal);
-DOM.cancelButton.addEventListener('click', backdropClickHandler);
+DOM.cancelAddButton.addEventListener('click', backdropClickHandler);
