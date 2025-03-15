@@ -37,7 +37,6 @@ const deleteMovieHandler = movieId => {
   movies.splice(movieIndex, 1);
   const listRoot = document.getElementById('movie-list');
   listRoot.children[movieIndex].remove();
-  // listRoot.removeChild(listRoot.children[movieIndex]);
   closeMovieDeletionModal();
   updateUI();
 };
@@ -52,8 +51,6 @@ const startDeleteMovieHandler = movieId => {
   confirmDeletionButton.replaceWith(confirmDeletionButton.cloneNode(true));
 
   confirmDeletionButton = deleteMovieModal.querySelector('.btn--danger');
-
-  // confirmDeletionButton.removeEventListener('click', deleteMovieHandler.bind(null, movieId)); // will not work :(
     
   cancelDeletionButton.removeEventListener('click', closeMovieDeletionModal);
 
@@ -89,7 +86,6 @@ const closeMovieModal = () => {
 };
 
 const showMovieModal = () => {
-  // function() {}
   addMovieModal.classList.add('visible');
   toggleBackdrop();
 };
