@@ -9,11 +9,34 @@ class Product {
 
 }
 
+class ProductItem {
+  constructor(product) {
+    this.product = product;
+  }
+
+  render() {
+    const prodEl = document.createElement('li');
+    prodEl.className = 'product-item';
+    prodEl.innerHTML = `
+        <div>
+          <img src="${this.product.imageUrl}" alt="${this.product.title}" >
+          <div class="product-item__content">
+            <h2>${this.product.title}</h2>
+            <h3>\$${this.product.price}</h3>
+            <p>${this.product.description}</p>
+            <button>Add to Cart</button>
+          </div>
+        </div>
+      `;
+    return prodEl;
+  }
+}
+
 const productList = {
   products: [
     new Product(
       'A Pillow',
-      'https://www.maxpixel.net/static/photo/2x/Soft-Pillow-Green-Decoration-Deco-Snuggle-1241878.jpg',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDddlMzV5Cl5V-34NxWaf-Iy_7iFfgwDuJVQ&s',
       'A soft pillow!',
       19.99
     ),
