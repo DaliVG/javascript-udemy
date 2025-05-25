@@ -1,72 +1,110 @@
-const defaultResult = 0;
+const listElement = document.querySelector('.posts');
+const postTemplate = document.getElementById('single-post');
+const form = document.querySelector('#new-post form');
+const fetchButton = document.querySelector('#available-posts button');
+const postList = document.querySelector('ul');
 
-let currentResult = defaultResult;
+function sendHttpRequest(method, url, data) {
+  // const promise = new Promise((resolve, reject) => {
+  // const xhr = new XMLHttpRequest();
+  // xhr.setRequestHeader('Content-Type', 'application/json');
 
-let historialEntries = [];
+  //   xhr.open(method, url);
 
-function getUserInput(){
-  return parseInt(usrInput.value);
+  //   xhr.responseType = 'json';
+
+  //   xhr.onload = function() {
+  //     if (xhr.status >= 200 && xhr.status < 300) {
+  //       resolve(xhr.response);
+  //     } else {
+  // xhr.response;
+  //       reject(new Error('Something went wrong!'));
+  //     }
+  //     // const listOfPosts = JSON.parse(xhr.response);
+  //   };
+
+  //   xhr.onerror = function() {
+  //     reject(new Error('Failed to send request!'));
+  //   };
+
+  //   xhr.send(JSON.stringify(data));
+  // });
+
+  // return promise;
+  return fetch(url, {
+    method: method,
+    // body: JSON.stringify(data),
+    body: data,
+    // headers: {
+    //   'Content-Type': 'application/json'
+    // }
+  })
+    .then(response => {
+      if (response.status >= 200 && response.status < 300) {
+        return response.json();
+      } else {
+        return response.json().then(errData => {
+          console.log(errData);
+          throw new Error('Something went wrong - server-side.');
+        });
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      throw new Error('Something went wrong!');
+    });
 }
 
-function operationIdentifier(  operation,
-  prevResult,
-  operationNumber,
-  newResult){
-    const logEntry = {
-      operation: operation,
-      prevResult: prevResult,
-      number: operationNumber,
-      result: newResult
-      };
-    historialEntries.push(logEntry);
-    console.log(historialEntries)
-}
-
-function createAndWriteLog(operator, resultBeforeCacl, calcNumber){
-  const calculationDescription = `${resultBeforeCacl} ${operator} ${calcNumber}`;
-  outputResult(currentResult, calculationDescription);
-}
-
-function calculateResult(calculationType){
-  const enteredNumber = getUserInput();
-  const initialResult = currentResult;
-  let mathOperator;
-  if(calculationType ==='ADD'){
-    currentResult += enteredNumber;
-    mathOperator = '+';
-  } else if (calculationType === 'SUBSTRAC'){
-    currentResult -= enteredNumber;
-    mathOperator = '-';
-  } else if (calculationType === 'MULTIPLY'){
-    currentResult *= enteredNumber;
-    mathOperator = '*';
-  } else if (calculationType === 'DIVIDE'){
-    currentResult /= enteredNumber;
-    mathOperator = '/';
+async function fetchPosts() {
+  try {
+    const responseData = await sendHttpRequest(
+      'GET',
+      'https://jsonplaceholder.typicode.com/posts'
+    );
+    const listOfPosts = responseData;
+    for (const post of listOfPosts) {
+      const postEl = document.importNode(postTemplate.content, true);
+      postEl.querySelector('h2').textContent = post.title.toUpperCase();
+      postEl.querySelector('p').textContent = post.body;
+      postEl.querySelector('li').id = post.id;
+      listElement.append(postEl);
+    }
+  } catch (error) {
+    alert(error.message);
   }
-
-  createAndWriteLog('+', initialResult, enteredNumber);
-  operationIdentifier(calculationType, initialResult, enteredNumber, currentResult);
 }
 
+async function createPost(title, content) {
+  const userId = Math.random();
+  const post = {
+    title: title,
+    body: content,
+    userId: userId
+  };
 
-function add() {
-  calculateResult('ADD')
+  const fd = new FormData(form);
+  // fd.append('title', title);
+  // fd.append('body', content);
+  fd.append('userId', userId);
+
+  sendHttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts', fd);
 }
 
-function substrac() {
-  calculateResult('SUBSTRAC')
-}
+fetchButton.addEventListener('click', fetchPosts);
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  const enteredTitle = event.currentTarget.querySelector('#title').value;
+  const enteredContent = event.currentTarget.querySelector('#content').value;
 
-function multiply() {
-  calculateResult('MULTIPLY');
-}
+  createPost(enteredTitle, enteredContent);
+});
 
-function divide() {
-  calculateResult('DIVIDE');
-}
-
-addBtn.addEventListener('click', add);
-subtractBtn.addEventListener('click', substrac);
-multiplyBtn.addEventListener('click', multiply);
-divideBtn.addEventListener('click', divide);
+postList.addEventListener('click', event => {
+  if (event.target.tagName === 'BUTTON') {
+    const postId = event.target.closest('li').id;
+    sendHttpRequest(
+      'DELETE',
+      `https://jsonplaceholder.typicode.com/posts/${postId}`
+    );
+  }
+});
